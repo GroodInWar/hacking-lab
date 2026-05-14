@@ -9,7 +9,7 @@
 
 ## Background
 
-The IP layer splits large datagrams into fragments that are reassembled at the destination.  Attackers send overlapping or conflicting fragments to confuse the reassembly code or evade signature‑based intrusion detection systems:contentReference[oaicite:4]{index=4}.  ICMP is a companion protocol used for diagnostics; it can be abused in Smurf attacks (ICMP echo requests to broadcast addresses with spoofed source IPs) and ping of death (oversized packets).  ICMP redirect messages can trick hosts into sending traffic to a malicious router:contentReference[oaicite:5]{index=5}.
+The IP layer splits large datagrams into fragments that are reassembled at the destination.  Attackers send overlapping or conflicting fragments to confuse the reassembly code or evade signature‑based intrusion detection systems.  ICMP is a companion protocol used for diagnostics; it can be abused in Smurf attacks (ICMP echo requests to broadcast addresses with spoofed source IPs) and ping of death (oversized packets).  ICMP redirect messages can trick hosts into sending traffic to a malicious router.
 
 ## Tasks
 
@@ -34,4 +34,4 @@ The IP layer splits large datagrams into fragments that are reassembled at the d
    - Enable reverse‑path filtering on routers to drop packets with spoofed source addresses (`sysctl -w net.ipv4.conf.all.rp_filter=1`).  
    - Configure routers to ignore ICMP redirects and host to verify the gateway before updating routes.
 
-Proceed to [Lab 03 – UDP amplification attacks](03-udp-amplification.md).
+Proceed to [Lab 03 – UDP amplification attacks](/labs/03-udp-amplification/).

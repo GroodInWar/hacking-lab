@@ -5,7 +5,7 @@
 - Understand how virtual private networks (VPNs) create secure tunnels through untrusted networks.
 - Build a simple VPN using TUN/TAP devices and static keys.
 - Use the VPN to bypass firewall restrictions.
-- Extend the VPN to use TLS/SSL for encryption and authentication:contentReference[oaicite:12]{index=12}.
+- Extend the VPN to use TLS/SSL for encryption and authentication.
 
 ## Background
 
@@ -37,4 +37,4 @@ A VPN encapsulates IP packets inside another protocol to provide confidentiality
    - What are the advantages and disadvantages of building your own VPN compared with using OpenVPN or WireGuard?  
    - How can certificate authorities and mutual authentication be used to prevent man‑in‑the‑middle attacks?
 
-Proceed to [Lab 09 – Network hardening and monitoring](09-hardening.md).
+Proceed to [Lab 09 – Network hardening and monitoring](/labs/09-hardening/).

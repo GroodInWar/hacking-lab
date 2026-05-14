@@ -1,0 +1,20 @@
+---
+import Layout from './Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+<!-- LabLayout wraps each lab page in your global Layout and adds Navbar/Footer -->
+<Layout title={title} description={description}>
+  <Navbar />
+  <main class="project-page-main">
+    <slot />      <!-- lab content will be inserted here -->
+    <Footer />
+  </main>
+</Layout>

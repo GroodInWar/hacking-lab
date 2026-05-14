@@ -9,7 +9,7 @@
 
 ## Background
 
-UDP is connectionless: there is no handshake, and responses are sent blindly to the source address.  Many protocols (DNS, NTP, SSDP) respond with more data than they receive.  Attackers send requests with a spoofed source IP (the victim) to these amplifiers; the amplifiers flood the victim with large responses:contentReference[oaicite:6]{index=6}.  The amplification factor is the ratio of response size to request size.
+UDP is connectionless: there is no handshake, and responses are sent blindly to the source address.  Many protocols (DNS, NTP, SSDP) respond with more data than they receive.  Attackers send requests with a spoofed source IP (the victim) to these amplifiers; the amplifiers flood the victim with large responses.  The amplification factor is the ratio of response size to request size.
 
 ## Tasks
 
@@ -29,4 +29,4 @@ UDP is connectionless: there is no handshake, and responses are sent blindly to 
    - Implement rate limiting on the amplifier.  For example, configure `vsftpd` to limit connections or install an NTP server with `restrict default ignore` in its configuration.  
    - On routers, deploy ingress filtering: drop packets entering the network with a source IP that does not belong to the source network.  Enable this by adding iptables rules like `iptables -A INPUT -s ! 192.168.0.0/16 -j DROP`.
 
-Proceed to [Lab 04 – TCP attacks and session hijacking](04-tcp-attacks.md).
+Proceed to [Lab 04 – TCP attacks and session hijacking](/labs/04-tcp-attacks/).

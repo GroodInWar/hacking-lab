@@ -37,4 +37,4 @@ A secure network uses multiple layers of defence: segmentation (separate LAN, DM
    - How can you balance security with usability and performance?  
    - Which controls are most effective against the attacks you studied?
 
-Congratulations!  You have completed the enterprise network security lab.  Consider exploring advanced topics such as BGP hijacking, PKI and certificate authorities:contentReference[oaicite:13]{index=13} or developing your own security tools.
+Congratulations!  You have completed the enterprise network security lab.  Consider exploring advanced topics such as BGP hijacking, PKI and certificate authorities or developing your own security tools.

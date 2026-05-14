@@ -9,7 +9,7 @@
 
 ## Background
 
-Heartbleed is a bug in the TLS heartbeat extension of OpenSSL.  A client could send a heartbeat request with a small payload but a large claimed length; the server would respond with the claimed length of data, leaking whatever followed in memory:contentReference[oaicite:10]{index=10}.  This allowed attackers to steal private keys, passwords and other sensitive information.
+Heartbleed is a bug in the TLS heartbeat extension of OpenSSL.  A client could send a heartbeat request with a small payload but a large claimed length; the server would respond with the claimed length of data, leaking whatever followed in memory.  This allowed attackers to steal private keys, passwords and other sensitive information.
 
 ## Tasks
 
@@ -31,4 +31,4 @@ Heartbleed is a bug in the TLS heartbeat extension of OpenSSL.  A client could s
    - How can organisations ensure timely patching of critical libraries?  
    - Why is it dangerous to allow arbitrary input lengths without validation?
 
-Proceed to [Lab 07 – Firewalls and evasion](07-firewalls.md).
+Proceed to [Lab 07 – Firewalls and evasion](/labs/07-firewalls/).

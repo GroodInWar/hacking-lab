@@ -1,15 +1,5 @@
 name: Deploy static site to GitHub Pages
 
-# This workflow builds and deploys the documentation site stored in
-# the `docs` directory to the `gh-pages` branch whenever changes are
-# pushed to the default branch.  It uses GitHub’s built‑in Pages
-# deployment actions rather than requiring a static site generator.
-#
-# To enable GitHub Pages for your repository, navigate to the
-# repository settings, enable Pages and select "GitHub Actions" as
-# the source.  The workflow will publish the `docs` folder as a
-# static website accessible at `https://grooinwar.github.io/hacking-lab/`.
-
 on:
   push:
     branches: ["main", "master"]
@@ -29,26 +19,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Prepare GitHub Pages artifact from the docs folder.  The
-      # configure-pages action sets up the correct configuration for
-      # publishing and automatically handles Jekyll processing if
-      # applicable.  Because our documentation consists of plain
-      # Markdown files, no additional build step is required.
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          # Specify that the site content is located in the docs directory.
-          folder: docs
+          node-version: 20
+          cache: npm
 
-      # Upload the docs directory as a Pages artifact.  This action
-      # packages the specified directory and prepares it for deployment.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: dist
 
   deploy:
     runs-on: ubuntu-latest

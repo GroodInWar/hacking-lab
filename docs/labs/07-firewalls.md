@@ -2,7 +2,7 @@
 
 ## Objectives
 
-- Understand the difference between packet filters, stateful firewalls and application proxies:contentReference[oaicite:11]{index=11}.
+- Understand the difference between packet filters, stateful firewalls and application proxies.
 - Build a basic firewall using Linux netfilter (iptables/nftables).
 - Write filtering rules to permit and block specific traffic.
 - Develop evasion techniques and test firewall robustness.
@@ -42,4 +42,4 @@ Attackers attempt to evade firewalls by fragmenting packets, tunnelling traffic 
    - Configure rules to detect ARP poisoning, SYN floods and DNS rebinding.  
    - Generate alerts and observe them in log files.
 
-Proceed to [Lab 08 – VPN tunnelling](08-vpn.md).
+Proceed to [Lab 08 – VPN tunnelling](/labs/08-vpn/).

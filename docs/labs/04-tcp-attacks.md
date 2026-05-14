@@ -4,7 +4,7 @@
 
 - Review the TCP three‑way handshake and connection teardown.
 - Conduct SYN flood, TCP reset and session hijacking attacks.
-- Perform the Mitnick attack: hijack a trusted connection by predicting sequence numbers:contentReference[oaicite:7]{index=7}.
+- Perform the Mitnick attack: hijack a trusted connection by predicting sequence numbers.
 - Apply defences such as SYN cookies, randomised initial sequence numbers (ISNs) and encrypted protocols.
 
 ## Background
@@ -13,7 +13,7 @@ TCP is a stateful protocol that uses sequence and acknowledgement numbers to ens
 
 - **SYN flood** – send a flood of SYN packets to exhaust the server’s backlog.
 - **TCP reset** – send a forged RST packet with the correct sequence/ack numbers to tear down a connection.
-- **Session hijacking** – predict or sniff sequence numbers to insert malicious data into an existing connection.  The famous Mitnick attack exploited predictable ISNs to gain root access to a target:contentReference[oaicite:8]{index=8}.
+- **Session hijacking** – predict or sniff sequence numbers to insert malicious data into an existing connection.  The famous Mitnick attack exploited predictable ISNs to gain root access to a target.
 
 ## Tasks
 
@@ -39,4 +39,4 @@ TCP is a stateful protocol that uses sequence and acknowledgement numbers to ens
    - Replace insecure services with SSH.  
    - Use a firewall or intrusion detection system to detect and block floods and suspicious sequence patterns.
 
-Proceed to [Lab 05 – DNS attacks](05-dns-attacks.md).
+Proceed to [Lab 05 – DNS attacks](/labs/05-dns-attacks/).

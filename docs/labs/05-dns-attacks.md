@@ -9,7 +9,7 @@
 
 ## Background
 
-DNS is a hierarchical, distributed database.  Hosts typically query a local resolver, which caches answers.  Attackers can spoof DNS responses to poison caches or trick victims into connecting to malicious IPs.  The SEED DNS labs cover attacks such as local DNS poisoning, remote DNS cache poisoning and DNS rebinding:contentReference[oaicite:9]{index=9}.
+DNS is a hierarchical, distributed database.  Hosts typically query a local resolver, which caches answers.  Attackers can spoof DNS responses to poison caches or trick victims into connecting to malicious IPs.  The SEED DNS labs cover attacks such as local DNS poisoning, remote DNS cache poisoning and DNS rebinding.
 
 ## Tasks
 
@@ -34,4 +34,4 @@ DNS is a hierarchical, distributed database.  Hosts typically query a local reso
    - Deploy DNSSEC to authenticate DNS responses.  
    - Configure browsers or OS to block DNS rebinding by preventing private IP addresses in DNS responses.
 
-Proceed to [Lab 06 – Heartbleed and protocol flaws](06-heartbleed.md).
+Proceed to [Lab 06 – Heartbleed and protocol flaws](/labs/06-heartbleed/).

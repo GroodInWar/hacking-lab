@@ -19,6 +19,6 @@ This repository contains a hands‑on lab designed to teach students how to secu
 
 ## Why Docker?
 
-The lab uses Docker bridge networks to simulate switches and routers.  According to the Docker documentation, user‑defined networks created with the `bridge` driver are backed by Linux bridge devices, which act like software switches:contentReference[oaicite:0]{index=0}.  This allows us to model a LAN, DMZ and internal network with minimal overhead.
+The lab uses Docker bridge networks to simulate switches and routers.  According to the Docker documentation, user‑defined networks created with the `bridge` driver are backed by Linux bridge devices, which act like software switches.  This allows us to model a LAN, DMZ and internal network with minimal overhead.
 
 For details on the topology and services included in this lab, see `docs/index.md` and `docker/docker-compose.yml`.

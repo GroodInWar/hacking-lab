@@ -9,7 +9,7 @@
 
 ## Background
 
-When a host wants to send an IP packet to another host on the same LAN, it needs the destination’s MAC address.  ARP is a simple protocol that broadcasts a request (“Who has IP X?”) and receives a reply (“MAC Y at IP X”).  Hosts cache these mappings in an ARP table.  The protocol is unauthenticated; any host can send unsolicited ARP replies, and victims will update their cache:contentReference[oaicite:2]{index=2}.  Attackers exploit this to poison ARP caches and intercept traffic:contentReference[oaicite:3]{index=3}.
+When a host wants to send an IP packet to another host on the same LAN, it needs the destination’s MAC address.  ARP is a simple protocol that broadcasts a request (“Who has IP X?”) and receives a reply (“MAC Y at IP X”).  Hosts cache these mappings in an ARP table.  The protocol is unauthenticated; any host can send unsolicited ARP replies, and victims will update their cache.  Attackers exploit this to poison ARP caches and intercept traffic.
 
 ## Tasks
 
@@ -37,4 +37,4 @@ When a host wants to send an IP packet to another host on the same LAN, it needs
    - How can switches mitigate ARP spoofing?  
    - What are the limitations of static ARP entries?
 
-Proceed to [Lab 02 – IP fragmentation & ICMP attacks](02-ip-icmp-attacks.md).
+Proceed to [Lab 02 – IP fragmentation & ICMP attacks](/labs/02-ip-icmp-attacks/).

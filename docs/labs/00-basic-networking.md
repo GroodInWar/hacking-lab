@@ -11,7 +11,7 @@
 
 A network is a collection of hosts and routers connected by links.  Each interface has an IP address and a subnet mask that defines which addresses are local.  When a host needs to send a packet to a non‑local address, it forwards the packet to its default gateway (a router).  The router uses its routing table to decide which interface to forward the packet on.
 
-In Docker, bridge networks behave like virtual switches.  Hosts on the same bridge can communicate directly:contentReference[oaicite:1]{index=1}.  Packets between bridges are forwarded by routers.  The routers in this lab are Linux containers configured with `iproute2` to assign addresses, enable IP forwarding and install static routes.
+In Docker, bridge networks behave like virtual switches.  Hosts on the same bridge can communicate directly.  Packets between bridges are forwarded by routers.  The routers in this lab are Linux containers configured with `iproute2` to assign addresses, enable IP forwarding and install static routes.
 
 ## Tasks
 
@@ -39,4 +39,4 @@ In Docker, bridge networks behave like virtual switches.  Hosts on the same brid
    - What happens if you assign two containers the same IP address?  
    - How might an attacker use packet sniffing in a real network?
 
-Proceed to [Lab 01 – ARP poisoning](01-arp-poisoning.md) when you are comfortable with basic networking operations.
+Proceed to [Lab 01 – ARP poisoning](/labs/01-arp-poisoning/) when you are comfortable with basic networking operations.
