@@ -1,0 +1,206 @@
+version: '3.8'
+
+# Topology description
+#
+#  ┌─────────┐      ┌─────────┐      ┌─────────┐      ┌──────────┐
+#  │Attacker │      │ Router1 │──────│ Router2 │──────│ Router3  │
+#  └───┬─────┘      └───┬─────┘      └───┬─────┘      └────┬─────┘
+#      │               │               │               │
+#      │               │               │               │
+#   ┌──┴──┐       ┌────┴───┐      ┌────┴───┐      ┌─────┴────┐
+#   │Client│       │   DMZ  │      │Internal│
+#   └──────┘       └────────┘      └────────┘
+#
+# Services are wired together using user‑defined bridge networks.  Bridge
+# networks are implemented in Docker by the Linux bridge driver; the
+# Docker networking guide explains that every network created with the
+# bridge driver is based on a Linux bridge (a software switch):contentReference[oaicite:0]{index=0}.
+# In other words, the LAN network defined below acts like a virtual
+# switch between the attacker, client and first router.
+
+services:
+  # Simulated attacker machine.
+  attacker:
+    image: kalilinux/kali-linux-docker
+    container_name: attacker
+    hostname: attacker
+    command: sleep infinity
+    networks:
+      external:
+        ipv4_address: 10.0.0.10
+    cap_add:
+      - NET_RAW
+
+  # Simulated client machine.
+  client:
+    image: debian:stable-slim
+    container_name: client
+    hostname: client
+    command: sleep infinity
+    networks:
+      external:
+        ipv4_address: 10.0.0.20
+    cap_add:
+      - NET_RAW
+
+  # Edge router connecting the external network to the transit network.
+  edge_router:
+    build: ./router
+    hostname: edge_router
+    container_name: edge_router
+    networks:
+      external:
+        ipv4_address: 10.0.0.1
+      transit:
+        ipv4_address: 172.16.0.1
+    environment:
+      IFACE0_IP: 10.0.0.1/24
+      IFACE1_IP: 172.16.0.1/30
+      ROUTES: |
+        192.168.1.0/24:172.16.0.2:eth1;
+        10.1.0.0/24:172.16.0.2:eth1
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  # Core router connecting the transit network to the enterprise DMZ.
+  core_router:
+    build: ./router
+    hostname: core_router
+    container_name: core_router
+    networks:
+      transit:
+        ipv4_address: 172.16.0.2
+      dmz:
+        ipv4_address: 192.168.1.1
+    environment:
+      IFACE0_IP: 172.16.0.2/30
+      IFACE1_IP: 192.168.1.1/24
+      ROUTES: |
+        10.0.0.0/24:172.16.0.1:eth0;
+        10.1.0.0/24:192.168.1.2:eth1
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  # Internal router connecting the DMZ to the internal network.
+  internal_router:
+    build: ./router
+    hostname: internal_router
+    container_name: internal_router
+    networks:
+      dmz:
+        ipv4_address: 192.168.1.2
+      internal:
+        ipv4_address: 10.1.0.1
+    environment:
+      IFACE0_IP: 192.168.1.2/24
+      IFACE1_IP: 10.1.0.1/24
+      ROUTES: |
+        10.0.0.0/24:192.168.1.1:eth0;
+        172.16.0.0/30:192.168.1.1:eth0
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  # Web server in the DMZ.
+  web_server:
+    image: nginx:alpine
+    container_name: web_server
+    hostname: web_server
+    networks:
+      dmz:
+        ipv4_address: 192.168.1.10
+    environment:
+      DEFAULT_GATEWAY: 192.168.1.2
+
+  # Mail server in the DMZ.
+  mail_server:
+    image: namshi/smtp
+    container_name: mail_server
+    hostname: mail_server
+    networks:
+      dmz:
+        ipv4_address: 192.168.1.20
+    environment:
+      DEFAULT_GATEWAY: 192.168.1.2
+
+  # DNS server in the DMZ.
+  dns_server:
+    image: andyshinn/dnsmasq
+    container_name: dns_server
+    hostname: dns_server
+    networks:
+      dmz:
+        ipv4_address: 192.168.1.30
+    environment:
+      DEFAULT_GATEWAY: 192.168.1.2
+
+  # File server in the internal network.
+  file_server:
+    image: debian:stable-slim
+    container_name: file_server
+    hostname: file_server
+    command: sleep infinity
+    networks:
+      internal:
+        ipv4_address: 10.1.0.10
+    environment:
+      DEFAULT_GATEWAY: 10.1.0.1
+    cap_add:
+      - NET_RAW
+
+  # Database server in the internal network.
+  database_server:
+    image: mysql:5.7
+    container_name: database_server
+    hostname: database_server
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      internal:
+        ipv4_address: 10.1.0.20
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      DEFAULT_GATEWAY: 10.1.0.1
+
+  # User PC in the internal network.
+  user_pc:
+    image: debian:stable-slim
+    container_name: user_pc
+    hostname: user_pc
+    command: sleep infinity
+    networks:
+      internal:
+        ipv4_address: 10.1.0.100
+    environment:
+      DEFAULT_GATEWAY: 10.1.0.1
+    cap_add:
+      - NET_RAW
+
+  # The physical switch in the external network is simulated by the
+  # Docker bridge itself; a dedicated container is not needed.
+
+networks:
+  external:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+
+  transit:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/30
+
+  dmz:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+
+  internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.0.0/24
