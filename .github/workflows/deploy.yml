@@ -62,4 +62,4 @@ jobs:
       # previous versions of the site.
       - name: Deploy to GitHub Pages
         id: deploy
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
