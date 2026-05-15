@@ -31,4 +31,4 @@ Heartbleed is a bug in the TLS heartbeat extension of OpenSSL.  A client could s
    - How can organisations ensure timely patching of critical libraries?  
    - Why is it dangerous to allow arbitrary input lengths without validation?
 
-Proceed to [Lab 07 – Firewalls and evasion](/labs/07-firewalls/).
+Proceed to [Lab 07 – Firewalls and evasion](07-firewalls.html).

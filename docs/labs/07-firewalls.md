@@ -17,19 +17,19 @@ Attackers attempt to evade firewalls by fragmenting packets, tunnelling traffic 
 ## Tasks
 
 1. **Enable forwarding and set default policies**  
-   - In a new container `firewall` connected between router1 and router2, enable IP forwarding (`sysctl -w net.ipv4.ip_forward=1`).  
+   - In a new container `firewall` connected between edge_router and core_router, enable IP forwarding (`sysctl -w net.ipv4.ip_forward=1`).  
    - Flush existing iptables rules (`iptables -F`).  
    - Set default policies to `DROP` for all chains (`iptables -P INPUT DROP; iptables -P FORWARD DROP; iptables -P OUTPUT ACCEPT`).
 
 2. **Write filtering rules**  
    - Allow established and related connections: `iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT`.  
-   - Permit HTTP/HTTPS traffic from the LAN to the DMZ web server and DNS queries to the DNS server.  
-   - Allow FTP only from the internal network to the DMZ.  
+   - Permit HTTP/HTTPS traffic from the external network to `web_server` and DNS queries to `dns_server`.  
+   - Permit only the mail, DNS, and web traffic that your policy requires; deny direct access from the external network to internal hosts.  
    - Deny all other inbound connections to the DMZ and internal networks.
 
 3. **Test the firewall**  
-   - Attempt to access the FTP server from the attacker (LAN); the firewall should block it.  
-   - Access the web server from the client; the firewall should permit it.  
+   - Attempt to access an internal host such as `file_server` (`10.1.0.10`) from the attacker; the firewall should block it.  
+   - Access `web_server` (`192.168.1.10`) from the client; the firewall should permit it.  
    - Run a port scan from the attacker and log the dropped attempts (`iptables -A FORWARD -j LOG --log-prefix "FW DROP: "`).
 
 4. **Evasion**  
@@ -42,4 +42,4 @@ Attackers attempt to evade firewalls by fragmenting packets, tunnelling traffic 
    - Configure rules to detect ARP poisoning, SYN floods and DNS rebinding.  
    - Generate alerts and observe them in log files.
 
-Proceed to [Lab 08 – VPN tunnelling](/labs/08-vpn/).
+Proceed to [Lab 08 – VPN tunnelling](08-vpn.html).

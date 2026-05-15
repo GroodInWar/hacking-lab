@@ -1,5 +1,6 @@
 node_modules/
 dist/
+_site/
 .astro/
 .vite/
 .vscode/
@@ -9,6 +10,8 @@ coverage/
 .cache/
 .jekyll-cache/
 .sass-cache/
+.bundle/
+vendor/bundle/
 .vercel/
 .netlify/
 .env
@@ -23,3 +26,4 @@ yarn-error.log*
 pnpm-debug.log*
 .DS_Store
 Thumbs.db
+/node_modules

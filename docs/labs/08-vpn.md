@@ -23,8 +23,8 @@ A VPN encapsulates IP packets inside another protocol to provide confidentiality
    - Assign IP `10.8.0.2/24` to the server’s TUN interface.
 
 3. **Route traffic through the VPN**  
-   - On the attacker, add a route for the internal network (`192.168.50.0/24`) via `10.8.0.2`.  
-   - On the server, add a route for `192.168.10.0/24` via `10.8.0.1`.  
+   - On the attacker, add a route for the internal network (`10.1.0.0/24`) via `10.8.0.2`.  
+   - On the server, add a route for the external network (`10.0.0.0/24`) via `10.8.0.1`.  
    - Test connectivity: ping internal hosts through the VPN.  The firewall should not see the encapsulated traffic’s inner headers.
 
 4. **Encrypt and authenticate**  
@@ -37,4 +37,4 @@ A VPN encapsulates IP packets inside another protocol to provide confidentiality
    - What are the advantages and disadvantages of building your own VPN compared with using OpenVPN or WireGuard?  
    - How can certificate authorities and mutual authentication be used to prevent man‑in‑the‑middle attacks?
 
-Proceed to [Lab 09 – Network hardening and monitoring](/labs/09-hardening/).
+Proceed to [Lab 09 – Network hardening and monitoring](09-hardening.html).

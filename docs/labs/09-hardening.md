@@ -9,12 +9,12 @@
 
 ## Background
 
-A secure network uses multiple layers of defence: segmentation (separate LAN, DMZ and internal networks), NAT to hide internal addresses, firewalls and IDS/IPS, strong authentication, encrypted protocols and timely patching.  Hardening also involves disabling unnecessary services, limiting administrative access and monitoring for anomalies.
+A secure network uses multiple layers of defence: segmentation (separate external network, DMZ and internal networks), NAT to hide internal addresses, firewalls and IDS/IPS, strong authentication, encrypted protocols and timely patching.  Hardening also involves disabling unnecessary services, limiting administrative access and monitoring for anomalies.
 
 ## Tasks
 
 1. **Enable NAT**  
-   - On `router3`, configure NAT for traffic leaving the internal network: `iptables -t nat -A POSTROUTING -s 192.168.50.0/24 ! -d 192.168.50.0/24 -j MASQUERADE`.  
+   - On `internal_router`, configure NAT for traffic leaving the internal network: `iptables -t nat -A POSTROUTING -s 10.1.0.0/24 ! -d 10.1.0.0/24 -j MASQUERADE`.  
    - Test that internal hosts can access external networks while their private addresses are hidden.
 
 2. **Segment management and user traffic**  

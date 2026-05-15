@@ -22,13 +22,13 @@ In Docker, bridge networks behave like virtual switches.  Hosts on the same brid
 
 2. **Ping and traceroute**  
    - From the `attacker` container, install `iputils-ping` if necessary (`apt update && apt install -y iputils-ping`).  
-   - Ping the `client` (`192.168.10.3`) and observe the replies.  
-   - Use `traceroute` (install it via `apt install -y traceroute`) to trace the path to a DMZ host (`192.168.30.10`).  Note which routers the packets traverse.
+   - Ping the `client` (`10.0.0.20`) and observe the replies.  
+   - Use `traceroute` (install it via `apt install -y traceroute`) to trace the path to a DMZ host (`192.168.1.10`).  Note which routers the packets traverse.
 
 3. **Packet sniffing**  
    - Install `tcpdump` in the `attacker` container (`apt install -y tcpdump`).  
-   - Run `tcpdump -n -i eth0` to capture packets on the LAN interface.  Ping the client again and observe the ARP and ICMP packets.  
-   - Try capturing on other interfaces by entering router containers (`docker compose exec router1 bash`) and running `tcpdump -n -i eth0` or `eth1`.
+   - Run `tcpdump -n -i eth0` to capture packets on the external network interface.  Ping the client again and observe the ARP and ICMP packets.  
+   - Try capturing on other interfaces by entering router containers (`docker compose exec edge_router bash`) and running `tcpdump -n -i eth0` or `eth1`.
 
 4. **Packet spoofing**  
    - Install Python and Scapy (`apt install -y python3 python3-pip && pip3 install scapy`).  
@@ -39,4 +39,4 @@ In Docker, bridge networks behave like virtual switches.  Hosts on the same brid
    - What happens if you assign two containers the same IP address?  
    - How might an attacker use packet sniffing in a real network?
 
-Proceed to [Lab 01 – ARP poisoning](/labs/01-arp-poisoning/) when you are comfortable with basic networking operations.
+Proceed to [Lab 01 – ARP poisoning](01-arp-poisoning.html) when you are comfortable with basic networking operations.

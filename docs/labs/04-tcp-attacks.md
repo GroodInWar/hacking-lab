@@ -19,12 +19,12 @@ TCP is a stateful protocol that uses sequence and acknowledgement numbers to ens
 
 1. **SYN flood**  
    - In the `attacker` container, install `hping3` (`apt install -y hping3`).  
-   - Start the FTP or web service in the DMZ and observe normal connections (`netstat -antp`).  
-   - Run `hping3 -S -p 80 --flood 192.168.30.10` to flood the web server with SYN packets.  Monitor the server’s connection table (`ss -nt state SYN-RECV`) and CPU usage.  
+   - Start the web or mail service in the DMZ and observe normal connections (`netstat -antp` or `ss -antp`).  
+   - Run `hping3 -S -p 80 --flood 192.168.1.10` to flood the web server with SYN packets.  Monitor the server’s connection table (`ss -nt state SYN-RECV`) and CPU usage.  
    - Apply SYN cookies on the server (`sysctl -w net.ipv4.tcp_syncookies=1`) and repeat the attack.  Observe the difference.
 
 2. **TCP reset**  
-   - Establish a persistent connection from the client to the DMZ web server (e.g. `curl http://192.168.30.10/`).  
+   - Establish a persistent connection from the client to the DMZ web server (e.g. `curl http://192.168.1.10/`).  
    - Use `tcpdump` to capture the sequence and acknowledgment numbers.  
    - Craft a RST packet using `scapy` or `hping3` with the correct sequence and send it to the server.  Verify that the connection is closed.
 
@@ -39,4 +39,4 @@ TCP is a stateful protocol that uses sequence and acknowledgement numbers to ens
    - Replace insecure services with SSH.  
    - Use a firewall or intrusion detection system to detect and block floods and suspicious sequence patterns.
 
-Proceed to [Lab 05 – DNS attacks](/labs/05-dns-attacks/).
+Proceed to [Lab 05 – DNS attacks](05-dns-attacks.html).

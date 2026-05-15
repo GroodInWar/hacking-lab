@@ -18,7 +18,7 @@ sysctl -w net.ipv4.ip_forward=1 >/dev/null
 
 # Assign addresses to all declared interfaces.  The environment
 # variables IFACE0_IP, IFACE1_IP, IFACE2_IP, etc. should contain
-# addresses with prefix lengths (e.g. 192.168.10.1/24).  The interface
+# addresses with prefix lengths (e.g. 10.0.0.1/24).  The interface
 # names inside the container follow Docker’s convention: eth0, eth1,
 # eth2 … in the order networks are defined in docker‑compose.yml.
 i=0
@@ -45,7 +45,7 @@ done
 # Apply static routes.  The ROUTES variable accepts a semicolon‑
 # separated list of entries in the form:
 #   destination/prefix:next_hop:interface
-# For example: 192.168.30.0/24:192.168.20.2:eth1
+# For example: 192.168.1.0/24:172.16.0.2:eth1
 # Multiple entries should be separated by semicolons.  Whitespace is
 # ignored and empty entries are skipped.
 if [[ -n "$ROUTES" ]]; then

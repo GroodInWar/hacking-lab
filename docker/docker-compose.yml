@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   attacker:
     image: kalilinux/kali-linux-docker
@@ -5,8 +7,8 @@ services:
     hostname: attacker
     command: sleep infinity
     networks:
-      lan:
-        ipv4_address: 192.168.10.2
+      external:
+        ipv4_address: 10.0.0.10
     cap_add:
       - NET_RAW
 
@@ -16,147 +18,149 @@ services:
     hostname: client
     command: sleep infinity
     networks:
-      lan:
-        ipv4_address: 192.168.10.3
+      external:
+        ipv4_address: 10.0.0.20
     cap_add:
       - NET_RAW
 
-  router1:
+  edge_router:
     build: ./router
-    hostname: router1
-    container_name: router1
+    hostname: edge_router
+    container_name: edge_router
     networks:
-      lan:
-        ipv4_address: 192.168.10.1
-      transit_12:
-        ipv4_address: 192.168.20.1
+      external:
+        ipv4_address: 10.0.0.1
+      transit:
+        ipv4_address: 172.16.0.1
     environment:
-      IFACE0_IP: 192.168.10.1/24
-      IFACE1_IP: 192.168.20.1/30
+      IFACE0_IP: 10.0.0.1/24
+      IFACE1_IP: 172.16.0.1/30
       ROUTES: |
-        192.168.30.0/24:192.168.20.2:eth1;
-        192.168.40.0/30:192.168.20.2:eth1;
-        192.168.50.0/24:192.168.20.2:eth1
+        192.168.1.0/24:172.16.0.2:eth1;
+        10.1.0.0/24:172.16.0.2:eth1
     cap_add:
       - NET_ADMIN
     privileged: true
 
-  router2:
+  core_router:
     build: ./router
-    hostname: router2
-    container_name: router2
+    hostname: core_router
+    container_name: core_router
     networks:
-      transit_12:
-        ipv4_address: 192.168.20.2
+      transit:
+        ipv4_address: 172.16.0.2
       dmz:
-        ipv4_address: 192.168.30.1
-      transit_23:
-        ipv4_address: 192.168.40.1
+        ipv4_address: 192.168.1.1
     environment:
-      IFACE0_IP: 192.168.20.2/30
-      IFACE1_IP: 192.168.30.1/24
-      IFACE2_IP: 192.168.40.1/30
+      IFACE0_IP: 172.16.0.2/30
+      IFACE1_IP: 192.168.1.1/24
       ROUTES: |
-        192.168.10.0/24:192.168.20.1:eth0;
-        192.168.50.0/24:192.168.40.2:eth2
+        10.0.0.0/24:172.16.0.1:eth0;
+        10.1.0.0/24:192.168.1.2:eth1
     cap_add:
       - NET_ADMIN
     privileged: true
 
-  router3:
+  internal_router:
     build: ./router
-    container_name: router3
-    hostname: router3
+    hostname: internal_router
+    container_name: internal_router
     networks:
-      transit_23:
-        ipv4_address: 192.168.40.2
+      dmz:
+        ipv4_address: 192.168.1.2
       internal:
-        ipv4_address: 192.168.50.1
+        ipv4_address: 10.1.0.1
     environment:
-      IFACE0_IP: 192.168.40.2/30
-      IFACE1_IP: 192.168.50.1/24
+      IFACE0_IP: 192.168.1.2/24
+      IFACE1_IP: 10.1.0.1/24
       ROUTES: |
-        192.168.10.0/24:192.168.40.1:eth0;
-        192.168.30.0/24:192.168.40.1:eth0
+        10.0.0.0/24:192.168.1.1:eth0;
+        172.16.0.0/30:192.168.1.1:eth0
     cap_add:
       - NET_ADMIN
     privileged: true
 
-  dmz_web:
+  web_server:
     image: nginx:alpine
-    container_name: dmz_web
-    hostname: dmz_web
+    container_name: web_server
+    hostname: web_server
     networks:
       dmz:
-        ipv4_address: 192.168.30.10
+        ipv4_address: 192.168.1.10
 
-  dmz_ftp:
-    image: fauria/vsftpd
-    container_name: dmz_ftp
-    hostname: dmz_ftp
+  mail_server:
+    image: namshi/smtp
+    container_name: mail_server
+    hostname: mail_server
     networks:
       dmz:
-        ipv4_address: 192.168.30.11
-    environment:
-      PASV_ADDRESS: 192.168.30.11
-      PASV_MIN_PORT: 21100
-      PASV_MAX_PORT: 21110
-      DEFAULT_DNS: 8.8.8.8
+        ipv4_address: 192.168.1.20
 
-  internal_host1:
+  dns_server:
+    image: andyshinn/dnsmasq
+    container_name: dns_server
+    hostname: dns_server
+    command: --log-facility=- --server=8.8.8.8
+    networks:
+      dmz:
+        ipv4_address: 192.168.1.30
+    cap_add:
+      - NET_ADMIN
+
+  file_server:
     image: debian:stable-slim
-    container_name: internal_host1
-    hostname: internal_host1
+    container_name: file_server
+    hostname: file_server
     command: sleep infinity
     networks:
       internal:
-        ipv4_address: 192.168.50.10
+        ipv4_address: 10.1.0.10
     cap_add:
       - NET_RAW
 
-  internal_host2:
+  database_server:
+    image: mysql:5.7
+    container_name: database_server
+    hostname: database_server
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      internal:
+        ipv4_address: 10.1.0.20
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+
+  user_pc:
     image: debian:stable-slim
-    container_name: internal_host2
-    hostname: internal_host2
+    container_name: user_pc
+    hostname: user_pc
     command: sleep infinity
     networks:
       internal:
-        ipv4_address: 192.168.50.11
+        ipv4_address: 10.1.0.100
     cap_add:
       - NET_RAW
 
 networks:
-  lan:
+  external:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.10.0/24
-          gateway: 192.168.10.254
+        - subnet: 10.0.0.0/24
 
-  transit_12:
+  transit:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.20.0/29
-          gateway: 192.168.20.6
+        - subnet: 172.16.0.0/30
 
   dmz:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.30.0/24
-          gateway: 192.168.30.254
-
-  transit_23:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.40.0/29
-          gateway: 192.168.40.6
+        - subnet: 192.168.1.0/24
 
   internal:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.50.0/24
-          gateway: 192.168.50.254
+        - subnet: 10.1.0.0/24
