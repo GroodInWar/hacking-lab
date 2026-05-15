@@ -2,12 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+
+import { Image } from "astro:assets";
+import networkTopology from "../assets/network-topology.png";
 ---
 
 <Layout>
   <header id="top" class="hero-section">
     <Navbar />
-    <div class="hero-content">
+    <div class="hero-content section-container">
       <p class="eyebrow">Network Security • Defense • Attacks</p>
       <h1>Enterprise Network Security Lab</h1>
       <p class="hero-summary">
@@ -17,6 +20,7 @@ import Footer from "../components/Footer.astro";
         networking fundamentals, how common attacks work, and how to harden a
         segmented environment.
       </p>
+      <Image src={networkTopology} alt="Network topology diagram" class="network-topology" />
     </div>
   </header>
   <main> 
