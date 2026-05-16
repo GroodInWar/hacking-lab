@@ -5,6 +5,88 @@ import Footer from "../components/Footer.astro";
 
 import { Image } from "astro:assets";
 import networkTopology from "../assets/network-topology.png";
+const labs = [
+  {
+    number: "00",
+    title: "Basic networking and reconnaissance",
+    href: "/labs/00-basic-networking.html",
+    description:
+      "Explore the network, understand IP addressing and routing, and learn to capture and spoof packets.",
+    tags: ["Networking", "Recon", "Packets"],
+  },
+  {
+    number: "01",
+    title: "ARP poisoning and MITM",
+    href: "/labs/01-arp-poisoning.html",
+    description:
+      "Perform ARP cache poisoning on the external segment, then implement defenses such as static ARP entries.",
+    tags: ["ARP", "MITM", "Defense"],
+  },
+  {
+    number: "02",
+    title: "IP fragmentation & ICMP attacks",
+    href: "/labs/02-ip-icmp-attacks.html",
+    description:
+      "Launch fragmentation and ICMP-based attacks, experiment with ICMP redirects, and enable reverse-path filtering.",
+    tags: ["ICMP", "Routing", "Filtering"],
+  },
+  {
+    number: "03",
+    title: "UDP amplification attacks",
+    href: "/labs/03-udp-amplification.html",
+    description:
+      "Use exposed UDP services such as DNS to amplify traffic and then implement rate limiting.",
+    tags: ["UDP", "DNS", "Rate limiting"],
+  },
+  {
+    number: "04",
+    title: "TCP attacks and session hijacking",
+    href: "/labs/04-tcp-attacks.html",
+    description:
+      "Conduct SYN flooding, TCP reset and hijacking attacks, then apply countermeasures like SYN cookies.",
+    tags: ["TCP", "Hijacking", "SYN flood"],
+  },
+  {
+    number: "05",
+    title: "DNS attacks",
+    href: "/labs/05-dns-attacks.html",
+    description:
+      "Poison local DNS responses, perform cache-poisoning experiments, and learn about DNSSEC and rebinding defenses.",
+    tags: ["DNS", "Poisoning", "DNSSEC"],
+  },
+  {
+    number: "06",
+    title: "Heartbleed and protocol flaws",
+    href: "/labs/06-heartbleed.html",
+    description:
+      "Exploit the Heartbleed vulnerability in a DMZ service, then patch OpenSSL and verify the fix.",
+    tags: ["TLS", "OpenSSL", "Patching"],
+  },
+  {
+    number: "07",
+    title: "Firewalls and evasion",
+    href: "/labs/07-firewalls.html",
+    description:
+      "Build filtering rules between network segments and test evasion techniques.",
+    tags: ["Firewalls", "Evasion", "Rules"],
+  },
+  {
+    number: "08",
+    title: "VPN tunnelling",
+    href: "/labs/08-vpn.html",
+    description:
+      "Create a TUN/TAP-based VPN from the external segment into the DMZ and route traffic to internal hosts.",
+    tags: ["VPN", "TUN/TAP", "Routing"],
+  },
+  {
+    number: "09",
+    title: "Network hardening and monitoring",
+    href: "/labs/09-hardening.html",
+    description:
+      "Combine previous defenses to harden the enterprise network with NAT, IDS/IPS, segmentation, and patching.",
+    tags: ["Hardening", "IDS/IPS", "Monitoring"],
+  },
+];
 ---
 
 <Layout>
@@ -20,10 +102,95 @@ import networkTopology from "../assets/network-topology.png";
         networking fundamentals, how common attacks work, and how to harden a
         segmented environment.
       </p>
-      <Image src={networkTopology} alt="Network topology diagram" class="network-topology" />
     </div>
   </header>
-  <main> 
+  <main>
+    <section id="overview" class="section-container split-section">
+      <div>
+        <p class="section-label">Infrastructure and Design</p>
+        <h2>Lab Overview</h2>
+        <Image
+          src={networkTopology}
+          alt="Network topology diagram"
+          class="network-topology"
+        />
+      </div>
+      <div class="section-copy">
+        <p style="margin-top:20px;">
+          The lab environment consists of four network segments:
+        </p>
+        <ul>
+          <li>
+            <strong>External</strong>(<code>10.0.0.0/24</code>): Attacker,
+            client, and the outside interface of <code>edge_router</code>.
+          </li>
+          <li>
+            <strong>Transit</strong>(<code>172.16.0.0/30</code>): Point-to-point
+            routing segment between <code>edge_router</code> and <code
+              >core_router</code
+            >.
+          </li>
+          <li>
+            <strong>Internal</strong>(<code>192.168.1.0/24</code>):
+            Public-facing services: <code>web_server</code>, <code
+              >mail_server</code
+            >, and <code>dns_server</code>.
+          </li>
+          <li>
+            <strong>Management</strong>(<code>10.1.0.0/24</code>): Protected
+            enterprise hosts: <code>file_server</code>, <code
+              >database_server</code
+            >, and <code>user_pc</code>.
+          </li>
+        </ul>
+        <p>
+          Traffic flows through <code>edge_router</code>, <code
+            >core_router</code
+          >, and
+          <code>internal_router</code>, which are Linux containers configured
+          with static routes. The default configuration is intentionally
+          permissive so students can observe attacks before adding hardening
+          controls.
+        </p>
+      </div>
+    </section>
+    <section id="labs" class="section-container labs-section">
+      <div class="labs-header">
+        <p class="section-label">Progressive Lab Path</p>
+        <h2>Labs</h2>
+        <p>
+          Work through the environment one layer at a time. Each lab introduces
+          a real network attack, then guides you toward practical defenses and
+          hardening techniques.
+        </p>
+      </div>
+
+      <div class="labs-grid">
+        {
+          labs.map((lab) => (
+            <a
+              class="lab-card"
+              href={lab.href}
+              aria-label={`Open Lab ${lab.number}: ${lab.title}`}
+            >
+              <div class="lab-card-top">
+                <span class="lab-number">Lab {lab.number}</span>
+                <span class="lab-arrow">→</span>
+              </div>
+
+              <h3>{lab.title}</h3>
+              <p>{lab.description}</p>
+
+              <div class="lab-tags">
+                {lab.tags.map((tag) => (
+                  <span>{tag}</span>
+                ))}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
     <Footer />
   </main>
 </Layout>
